@@ -29,7 +29,10 @@ def parseNumber(text):
     try:
         return __NUMBER__[ten]*10 + __NUMBER__[one]
     except KeyError:
-        return int(text)
+        try:
+            return int(text)
+        except ValueError:
+            return None
 
 __TIMEZONE__ = {
     "오전" : 10,
@@ -89,7 +92,8 @@ def parseTime(text):
     bun = txt.find('분')
     if bun >= 0:
         minute = parseNumber(txt[:bun])
-        time_txt += txt[:bun+len('분')]
+        if minute is not None:
+            time_txt += txt[:bun+len('분')]
     elif txt.startswith('반'):
         minute = 30
         time_txt += '반'
